@@ -45,6 +45,7 @@ public class Configuracion extends javax.swing.JDialog {
         jpPaswordBD = new javax.swing.JPasswordField();
         btnSave = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        btnTest = new javax.swing.JButton();
 
         txtIP.setText("LocalHost");
 
@@ -62,31 +63,38 @@ public class Configuracion extends javax.swing.JDialog {
 
         btnCancelar.setText("Cancelar");
 
+        btnTest.setText("Test");
+
         javax.swing.GroupLayout JpLoginLayout = new javax.swing.GroupLayout(JpLogin);
         JpLogin.setLayout(JpLoginLayout);
         JpLoginLayout.setHorizontalGroup(
             JpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JpLoginLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(JpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox1)
-                    .addGroup(JpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(JpLoginLayout.createSequentialGroup()
-                            .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(JpLoginLayout.createSequentialGroup()
-                            .addGroup(JpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lbDBName)
-                                .addComponent(lbUsuario)
-                                .addComponent(jLabel1)
-                                .addComponent(lbPasword))
-                            .addGap(18, 18, 18)
-                            .addGroup(JpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtIP)
-                                .addComponent(txtDBName, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                                .addComponent(txtUser, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                                .addComponent(jpPaswordBD)))))
+                    .addGroup(JpLoginLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(JpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBox1)
+                            .addGroup(JpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(JpLoginLayout.createSequentialGroup()
+                                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(JpLoginLayout.createSequentialGroup()
+                                    .addGroup(JpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lbDBName)
+                                        .addComponent(lbUsuario)
+                                        .addComponent(jLabel1)
+                                        .addComponent(lbPasword))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(JpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtIP)
+                                        .addComponent(txtDBName, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                                        .addComponent(txtUser, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                                        .addComponent(jpPaswordBD))))))
+                    .addGroup(JpLoginLayout.createSequentialGroup()
+                        .addGap(92, 92, 92)
+                        .addComponent(btnTest)))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
         JpLoginLayout.setVerticalGroup(
@@ -114,7 +122,9 @@ public class Configuracion extends javax.swing.JDialog {
                 .addGroup(JpLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnTest, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -142,6 +152,7 @@ public class Configuracion extends javax.swing.JDialog {
     private javax.swing.JPanel JpLogin;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnTest;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPasswordField jpPaswordBD;
