@@ -4,6 +4,9 @@
  */
 package proyecto1_ago_dic.frmView;
 
+import BDMG.ConexionBD;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author soule
@@ -47,7 +50,7 @@ public class Configuracion extends javax.swing.JDialog {
         btnCancelar = new javax.swing.JButton();
         btnTest = new javax.swing.JButton();
 
-        txtIP.setText("LocalHost");
+        txtIP.setText("localhost");
 
         jLabel1.setText("Ip base de datos");
 
@@ -64,6 +67,11 @@ public class Configuracion extends javax.swing.JDialog {
         btnCancelar.setText("Cancelar");
 
         btnTest.setText("Test");
+        btnTest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTestActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout JpLoginLayout = new javax.swing.GroupLayout(JpLogin);
         JpLogin.setLayout(JpLoginLayout);
@@ -142,6 +150,16 @@ public class Configuracion extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestActionPerformed
+        ConexionBD conexion = new ConexionBD(txtIP.getText(), txtDBName.getText(), txtUser.getText(),jpPaswordBD.getText(), false);
+        
+        if(conexion.MakeConexion()){
+            JOptionPane.showMessageDialog(this, "Conexion existosa");
+        } else {
+               JOptionPane.showMessageDialog(this, "Conexion fallida");
+        }
+    }//GEN-LAST:event_btnTestActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

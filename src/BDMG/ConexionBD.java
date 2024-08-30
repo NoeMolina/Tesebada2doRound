@@ -12,8 +12,8 @@ import java.sql.SQLException;
 
 //para realizar la conexion a la base de datos
 public class ConexionBD {
-    static final String CONTROLADOR = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private Connection conexion = null;
+    private String url;
+    private Connection connection = null;
     private String ip;
     private String nameBD;
     private String user;
@@ -25,11 +25,34 @@ public class ConexionBD {
         this.nameBD = nameBD;
         this.user = user;
         this.password = password;
-        this.WC = WC;
+        this.WC = WC;   
+        url = "jdbc:sqlserver://"+this.ip+":1433;database="+this.nameBD+";encrypt=true;trustServerCertificate=true";
+        
     }
     
-    public void MakeConexion(){
+    public boolean MakeConexion(){
+        boolean itsconnected = true;
+        try {
+        connection = DriverManager.getConnection(url, user, password);
         
+            if (connection != null) {
+                System.out.println("Conexion exitosa");
+                itsconnected = true;
+            }
+ 
+        } catch (SQLException  e) {
+            System.out.println("Error al conectar con la base de datos: " + e.getMessage());
+            itsconnected = false;
+        }finally {
+            try {
+                if (connection != null && !connection.isClosed()) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return itsconnected;
     }
     
     
