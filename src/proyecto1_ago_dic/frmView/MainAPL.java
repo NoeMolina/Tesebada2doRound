@@ -27,19 +27,24 @@ public class MainAPL extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenuOpciones = new javax.swing.JMenu();
+        MenuItemProcesar = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuConfig = new javax.swing.JMenu();
         MenuItemBD = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jMenuOpciones.setText("Opciones");
-        jMenuOpciones.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+        MenuItemProcesar.setText("Opciones");
+        MenuItemProcesar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
-                jMenuOpcionesMouseDragged(evt);
+                MenuItemProcesarMouseDragged(evt);
             }
         });
-        jMenuBar1.add(jMenuOpciones);
+
+        jMenuItem1.setText("jMenuItem1");
+        MenuItemProcesar.add(jMenuItem1);
+
+        jMenuBar1.add(MenuItemProcesar);
 
         jMenuConfig.setText("Configuracion");
         jMenuConfig.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -87,10 +92,10 @@ public class MainAPL extends javax.swing.JFrame {
         jMenuConfig.doClick();
     }//GEN-LAST:event_jMenuConfigMouseEntered
 
-    private void jMenuOpcionesMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuOpcionesMouseDragged
+    private void MenuItemProcesarMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuItemProcesarMouseDragged
         // TODO add your handling code here:
-        jMenuOpciones.doClick();
-    }//GEN-LAST:event_jMenuOpcionesMouseDragged
+        MenuItemProcesar.doClick();
+    }//GEN-LAST:event_MenuItemProcesarMouseDragged
 
     /**
      * @param args the command line arguments
@@ -98,8 +103,9 @@ public class MainAPL extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem MenuItemBD;
+    private javax.swing.JMenu MenuItemProcesar;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuConfig;
-    private javax.swing.JMenu jMenuOpciones;
+    private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
 }
