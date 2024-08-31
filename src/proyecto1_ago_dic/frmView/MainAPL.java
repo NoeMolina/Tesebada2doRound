@@ -4,15 +4,14 @@
  */
 package proyecto1_ago_dic.frmView;
 
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author soule
  */
 public class MainAPL extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainAPL
-     */
     public MainAPL() {
         initComponents();
     }
@@ -41,7 +40,12 @@ public class MainAPL extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem1.setText("jMenuItem1");
+        jMenuItem1.setText("Insertar");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         MenuItemProcesar.add(jMenuItem1);
 
         jMenuBar1.add(MenuItemProcesar);
@@ -93,9 +97,14 @@ public class MainAPL extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuConfigMouseEntered
 
     private void MenuItemProcesarMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuItemProcesarMouseDragged
-        // TODO add your handling code here:
-        MenuItemProcesar.doClick();
+          MenuItemProcesar.doClick();
     }//GEN-LAST:event_MenuItemProcesarMouseDragged
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        frInserts frInsert = new frInserts(this);
+        frInsert.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
