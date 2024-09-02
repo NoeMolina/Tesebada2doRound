@@ -4,6 +4,7 @@
  */
 package proyecto1_ago_dic.frmView;
 
+import BDMG.ConexionBD;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import javax.swing.JFileChooser;
@@ -18,9 +19,12 @@ public class frInserts extends javax.swing.JDialog {
 
     private FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos csv", "csv");
     private DefaultTableModel tableModel;
-    public frInserts(javax.swing.JFrame Padre) {
+    private ConexionBD conexion;
+    
+    public frInserts(javax.swing.JFrame Padre, ConexionBD conexion) {
         super(Padre, "frInserts", true);
         this.tableModel = new DefaultTableModel();
+        this.conexion = conexion;
         initComponents();
     }
 
@@ -33,6 +37,7 @@ public class frInserts extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        grp1 = new javax.swing.ButtonGroup();
         btnInsertar = new javax.swing.JButton();
         lblRutaArchivo = new javax.swing.JLabel();
         txtRutaArchivo = new javax.swing.JTextField();
@@ -41,6 +46,8 @@ public class frInserts extends javax.swing.JDialog {
         lblNomArchivo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCSV = new javax.swing.JTable();
+        RbtTicketD = new javax.swing.JRadioButton();
+        rbTicketH = new javax.swing.JRadioButton();
 
         btnInsertar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnInsertar.setText("Insertar");
@@ -72,6 +79,12 @@ public class frInserts extends javax.swing.JDialog {
         tblCSV.setModel(tableModel);
         jScrollPane1.setViewportView(tblCSV);
 
+        grp1.add(RbtTicketD);
+        RbtTicketD.setText("on TicketD");
+
+        grp1.add(rbTicketH);
+        rbTicketH.setText("on TicketH");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -79,15 +92,23 @@ public class frInserts extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtRutaArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnFileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblRutaArchivo)
-                    .addComponent(txtNomArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNomArchivo)
                     .addComponent(jScrollPane1)
-                    .addComponent(btnInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtRutaArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnFileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblRutaArchivo)
+                            .addComponent(txtNomArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblNomArchivo)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(RbtTicketD)
+                                    .addComponent(rbTicketH))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -105,8 +126,13 @@ public class frInserts extends javax.swing.JDialog {
                 .addComponent(txtNomArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addComponent(btnInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(RbtTicketD)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(rbTicketH)))
                 .addContainerGap())
         );
 
@@ -117,6 +143,12 @@ public class frInserts extends javax.swing.JDialog {
 
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
         // TODO add your handling code here:
+        if (rbTicketH.isSelected()) {
+             conexion.Insert(txtRutaArchivo.getText(), true);
+        } else{
+            conexion.Insert(txtRutaArchivo.getText(), false);
+        }
+       
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void btnFileChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileChooserActionPerformed
@@ -166,11 +198,14 @@ public class frInserts extends javax.swing.JDialog {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton RbtTicketD;
     private javax.swing.JButton btnFileChooser;
     private javax.swing.JButton btnInsertar;
+    private javax.swing.ButtonGroup grp1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblNomArchivo;
     private javax.swing.JLabel lblRutaArchivo;
+    private javax.swing.JRadioButton rbTicketH;
     private javax.swing.JTable tblCSV;
     private javax.swing.JTextField txtNomArchivo;
     private javax.swing.JTextField txtRutaArchivo;

@@ -4,14 +4,17 @@
  */
 package proyecto1_ago_dic.frmView;
 
+import BDMG.ConexionBD;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author soule
  */
+    
 public class MainAPL extends javax.swing.JFrame {
-
+    private ConexionBD conexion;
+    
     public MainAPL() {
         initComponents();
     }
@@ -89,6 +92,7 @@ public class MainAPL extends javax.swing.JFrame {
         
         Configuracion config = new Configuracion(this);
         config.setVisible(true);
+        conexion = config.getConexionBD();
     }//GEN-LAST:event_MenuItemBDActionPerformed
 
     private void jMenuConfigMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuConfigMouseEntered
@@ -102,7 +106,7 @@ public class MainAPL extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        frInserts frInsert = new frInserts(this);
+        frInserts frInsert = new frInserts(this, conexion);
         frInsert.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
