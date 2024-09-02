@@ -30,7 +30,8 @@ public class MainAPL extends javax.swing.JFrame {
 
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuItemProcesar = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        MitemInsertar = new javax.swing.JMenuItem();
+        JMItemProcesar = new javax.swing.JMenuItem();
         jMenuConfig = new javax.swing.JMenu();
         MenuItemBD = new javax.swing.JMenuItem();
 
@@ -43,13 +44,21 @@ public class MainAPL extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem1.setText("Insertar");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        MitemInsertar.setText("Insertar");
+        MitemInsertar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                MitemInsertarActionPerformed(evt);
             }
         });
-        MenuItemProcesar.add(jMenuItem1);
+        MenuItemProcesar.add(MitemInsertar);
+
+        JMItemProcesar.setText("Procesar");
+        JMItemProcesar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JMItemProcesarActionPerformed(evt);
+            }
+        });
+        MenuItemProcesar.add(JMItemProcesar);
 
         jMenuBar1.add(MenuItemProcesar);
 
@@ -104,21 +113,26 @@ public class MainAPL extends javax.swing.JFrame {
           MenuItemProcesar.doClick();
     }//GEN-LAST:event_MenuItemProcesarMouseDragged
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void MitemInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MitemInsertarActionPerformed
         // TODO add your handling code here:
         frInserts frInsert = new frInserts(this, conexion);
         frInsert.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_MitemInsertarActionPerformed
+
+    private void JMItemProcesarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMItemProcesarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JMItemProcesarActionPerformed
 
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem JMItemProcesar;
     private javax.swing.JMenuItem MenuItemBD;
     private javax.swing.JMenu MenuItemProcesar;
+    private javax.swing.JMenuItem MitemInsertar;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuConfig;
-    private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
 }
