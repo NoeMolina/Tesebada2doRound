@@ -190,7 +190,6 @@ public class frInserts extends javax.swing.JDialog {
                 tableModel.addRow(datos);
             }
             System.out.println("Número de filas agregadas: " + tableModel.getRowCount());
-            //se fuerza la actualizacion de la tabla\
 
         } catch (Exception e) {
             e.printStackTrace();

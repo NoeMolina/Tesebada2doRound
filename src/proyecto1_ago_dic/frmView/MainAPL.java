@@ -121,6 +121,8 @@ public class MainAPL extends javax.swing.JFrame {
 
     private void JMItemProcesarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMItemProcesarActionPerformed
         // TODO add your handling code here:
+        Procesar procesar = new Procesar(this, conexion);
+        procesar.setVisible(true);
     }//GEN-LAST:event_JMItemProcesarActionPerformed
 
     /**

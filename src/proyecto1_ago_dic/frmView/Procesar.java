@@ -4,16 +4,19 @@
  */
 package proyecto1_ago_dic.frmView;
 
+import BDMG.ConexionBD;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author RICARDO VG LAPTOPS
  */
-public class Procesar extends javax.swing.JFrame {
+public class Procesar extends javax.swing.JDialog {
 
-    /**
-     * Creates new form Procesar
-     */
-    public Procesar() {
+    private ConexionBD conexion;
+    public Procesar(javax.swing.JFrame Padre, ConexionBD conexion) {
+        super(Padre, "Procesar", true);
+        this.conexion = conexion;
         initComponents();
     }
 
@@ -26,57 +29,112 @@ public class Procesar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        bgroupCritero = new javax.swing.ButtonGroup();
+        rbEdo = new javax.swing.JRadioButton();
+        rbCiudad = new javax.swing.JRadioButton();
+        rbTienda = new javax.swing.JRadioButton();
+        lbSeleccioneCriterio = new javax.swing.JLabel();
+        lbID = new javax.swing.JLabel();
+        txtID = new javax.swing.JTextField();
+        btnProcesar = new javax.swing.JButton();
+
+        bgroupCritero.add(rbEdo);
+        rbEdo.setText("Edo");
+
+        bgroupCritero.add(rbCiudad);
+        rbCiudad.setText("Ciudad");
+
+        bgroupCritero.add(rbTienda);
+        rbTienda.setText("Tienda");
+
+        lbSeleccioneCriterio.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lbSeleccioneCriterio.setText("Seleccione el criterio");
+
+        lbID.setText("ID");
+
+        btnProcesar.setText("Procesar");
+        btnProcesar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProcesarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbSeleccioneCriterio)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(rbEdo)
+                        .addGap(18, 18, 18)
+                        .addComponent(rbCiudad)
+                        .addGap(18, 18, 18)
+                        .addComponent(rbTienda))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbID)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnProcesar)))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(lbSeleccioneCriterio)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbEdo)
+                    .addComponent(rbCiudad)
+                    .addComponent(rbTienda))
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbID)
+                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnProcesar))
+                .addContainerGap(171, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    private void btnProcesarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarActionPerformed
+        // TODO add your handling code here:
+        //se obtiene el id
+        int id;
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Procesar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Procesar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Procesar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Procesar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            id = Integer.parseInt(txtID.getText());
+        } catch (NumberFormatException  e) {
+            JOptionPane.showMessageDialog(this, "Ingrese un numero como ID");
+            return;
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Procesar().setVisible(true);
-            }
-        });
-    }
+        if (bgroupCritero.getSelection() == null) {
+            JOptionPane.showMessageDialog(this, "Ningun criterio seleccionado");
+            return;
+        }
+        if(rbCiudad.isSelected()){
+            conexion.Procesar(id, "IDCIUDAD");
+        }
+        if(rbEdo.isSelected()){
+            conexion.Procesar(id, "IDEDO");
+        }
+        if(rbTienda.isSelected()){
+            conexion.Procesar(id, "IDTIENDA");
+        }
+    }//GEN-LAST:event_btnProcesarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup bgroupCritero;
+    private javax.swing.JButton btnProcesar;
+    private javax.swing.JLabel lbID;
+    private javax.swing.JLabel lbSeleccioneCriterio;
+    private javax.swing.JRadioButton rbCiudad;
+    private javax.swing.JRadioButton rbEdo;
+    private javax.swing.JRadioButton rbTienda;
+    private javax.swing.JTextField txtID;
     // End of variables declaration//GEN-END:variables
 }

@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 //para realizar la conexion a la base de datos
 public class ConexionBD {
@@ -103,6 +105,58 @@ public class ConexionBD {
         e.printStackTrace();
     }
     }
+    
+    public void Procesar(int id, String criterio){
+        ResultSet conjuntoResultados = null;
+        String queryTickets = "SELECT * FROM TICKETSD " +
+			"INNER JOIN TICKETSH ON TICKETSD.TICKET = TICKETSH.TICKET " +
+			"WHERE TICKETSH.ID" + criterio + " = ?";
+        
+        String queryActualizar = "UPDATE TICKETSD SET PRECIO = ? FROM TICKETSD WHERE TICKET = ? AND IDPRODUCTO = ?";
+        int resultado = 0;
+        
+        try {
+            PreparedStatement ConsultarTickets = connection.prepareStatement(queryTickets);
+            PreparedStatement ActualizarPrecios = connection.prepareStatement(queryActualizar);
+            connection.setAutoCommit(false);
+            ConsultarTickets.setInt(1, id);
+            conjuntoResultados = ConsultarTickets.executeQuery();
+            
+            int c = 0;
+            while(conjuntoResultados.next()) {
+		String ticket = conjuntoResultados.getString("TICKET");
+		int idProducto = conjuntoResultados.getInt("IDPRODUCTO");
+		int precio = conjuntoResultados.getInt("PRECIO");
+		int nuevoPrecio = precio + 1;
+				
+		ActualizarPrecios.setInt(1, nuevoPrecio);
+		ActualizarPrecios.setString(2, ticket);
+		ActualizarPrecios.setInt(3, idProducto);
+				
+		ActualizarPrecios.executeUpdate();
+		System.out.println("Registro #" + c + " preparado.");
+		c++;
+		}
+            connection.commit();
+		}catch ( SQLException excepcionSql ){
+			excepcionSql.printStackTrace();
+			try {
+				if(connection != null) {
+					connection.rollback();
+				}
+			}catch (SQLException ex) {
+                System.out.println("Error al realizar el rollback: " + ex.getMessage());
+            }
+			close();
+		}
+	}
+    public void close(){
+	try {
+		connection.close();
+	}catch ( SQLException excepcionSql ){
+		excepcionSql.printStackTrace();
+	}
+    }   
     
     
 }
