@@ -106,50 +106,77 @@ public class ConexionBD {
     }
     }
     
-    public void Procesar(int id, String criterio){
-        ResultSet conjuntoResultados = null;
-        String queryTickets = "SELECT * FROM TICKETSD " +
-			"INNER JOIN TICKETSH ON TICKETSD.TICKET = TICKETSH.TICKET " +
-			"WHERE TICKETSH.ID" + criterio + " = ?";
+public void Procesar(int id, String criterio) {
+    ResultSet conjuntoResultados = null;
+    
+    String queryTickets = "SELECT TICKETSH.FOLIO, TICKETSD.IDPRODUCTO, TICKETSD.PRECIO " +
+                          "FROM TICKETSD WITH (UPDLOCK, HOLDLOCK) " +
+                          "INNER JOIN TICKETSH ON TICKETSD.TICKET = TICKETSH.FOLIO " +
+                          "INNER JOIN ( " +
+                              "SELECT TICKETSH.FOLIO " +
+                              "FROM TICKETSD " +
+                              "INNER JOIN TICKETSH ON TICKETSD.TICKET = TICKETSH.FOLIO " +
+                              "WHERE TICKETSH." + criterio + " = ? " +
+                              "GROUP BY TICKETSH.FOLIO " +
+                              "HAVING COUNT(DISTINCT TICKETSD.IDPRODUCTO) >= 3 " +
+                          ") AS TicketsFiltrados ON TICKETSH.FOLIO = TicketsFiltrados.FOLIO " +
+                          "WHERE TICKETSH." + criterio + " = ?";
+
+    String queryActualizar = "UPDATE TICKETSD SET PRECIO = ? " +
+                             "WHERE TICKET = ? AND IDPRODUCTO = ?";
+    
+    try {
+        // Preparar consulta para seleccionar los tickets
+        PreparedStatement ConsultarTickets = connection.prepareStatement(queryTickets);
+        ConsultarTickets.setInt(1, id);
+        ConsultarTickets.setInt(2, id);
+
+        // Preparar consulta para actualizar los precios
+        PreparedStatement ActualizarPrecios = connection.prepareStatement(queryActualizar);
+        connection.setAutoCommit(false);  // Desactivar autocommit para iniciar la transacción
         
-        String queryActualizar = "UPDATE TICKETSD SET PRECIO = ? FROM TICKETSD WHERE TICKET = ? AND IDPRODUCTO = ?";
-        int resultado = 0;
+        conjuntoResultados = ConsultarTickets.executeQuery();
         
-        try {
-            PreparedStatement ConsultarTickets = connection.prepareStatement(queryTickets);
-            PreparedStatement ActualizarPrecios = connection.prepareStatement(queryActualizar);
-            connection.setAutoCommit(false);
-            ConsultarTickets.setInt(1, id);
-            conjuntoResultados = ConsultarTickets.executeQuery();
+        int c = 0;
+        while (conjuntoResultados.next()) {
+            String ticket = conjuntoResultados.getString("FOLIO");
+            int idProducto = conjuntoResultados.getInt("IDPRODUCTO");
+            int precio = conjuntoResultados.getInt("PRECIO");
+            int nuevoPrecio = precio + 1;  // Incrementar el precio en 1
             
-            int c = 0;
-            while(conjuntoResultados.next()) {
-		String ticket = conjuntoResultados.getString("TICKET");
-		int idProducto = conjuntoResultados.getInt("IDPRODUCTO");
-		int precio = conjuntoResultados.getInt("PRECIO");
-		int nuevoPrecio = precio + 1;
-				
-		ActualizarPrecios.setInt(1, nuevoPrecio);
-		ActualizarPrecios.setString(2, ticket);
-		ActualizarPrecios.setInt(3, idProducto);
-				
-		ActualizarPrecios.executeUpdate();
-		System.out.println("Registro #" + c + " preparado.");
-		c++;
-		}
-            connection.commit();
-		}catch ( SQLException excepcionSql ){
-			excepcionSql.printStackTrace();
-			try {
-				if(connection != null) {
-					connection.rollback();
-				}
-			}catch (SQLException ex) {
-                System.out.println("Error al realizar el rollback: " + ex.getMessage());
+            // Preparar la actualización del precio
+            ActualizarPrecios.setInt(1, nuevoPrecio);
+            ActualizarPrecios.setString(2, ticket);
+            ActualizarPrecios.setInt(3, idProducto);
+            
+            ActualizarPrecios.executeUpdate();  // Ejecutar la actualización
+            System.out.println("Registro #" + c + " actualizado. Ticket: " + ticket + ", Producto: " + idProducto);
+            c++;
+        }
+        
+        connection.commit();  // Confirmar la transacción
+        System.out.println("Transacción completada con éxito.");
+    } catch (SQLException excepcionSql) {
+        excepcionSql.printStackTrace();
+        try {
+            if (connection != null) {
+                connection.rollback();  // Revertir los cambios en caso de error
+                System.out.println("Transacción revertida.");
             }
-			close();
-		}
-	}
+        } catch (SQLException ex) {
+            System.out.println("Error al realizar el rollback: " + ex.getMessage());
+        }
+    } finally {
+        try {
+            if (conjuntoResultados != null) conjuntoResultados.close();
+            if (connection != null) connection.setAutoCommit(true);  // Volver a activar autocommit
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
     public void close(){
 	try {
 		connection.close();
