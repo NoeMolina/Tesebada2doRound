@@ -120,7 +120,7 @@ public class Procesar extends javax.swing.JDialog {
             conexion.Procesar(id, "IDCIUDAD");
         }
         if(rbEdo.isSelected()){
-            conexion.Procesar(id, "IDEDO");
+            conexion.Procesar(id, "IDESTADO");
         }
         if(rbTienda.isSelected()){
             conexion.Procesar(id, "IDTIENDA");
