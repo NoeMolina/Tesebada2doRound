@@ -72,23 +72,22 @@ public class ConexionBD {
         // Lee la primera línea (encabezados) y la ignora
         br.readLine();
         
-        // Lee las líneas restantes (datos)
         while ((linea = br.readLine()) != null) {
             String[] datos = linea.split(separador);
             
-            // Asigna los valores a la consulta según la tabla
+            
             if (table) {
-                pstmt.setString(1, datos[0]); // FOLIO
-                pstmt.setDate(2, java.sql.Date.valueOf(datos[1])); // FECHA
-                pstmt.setInt(3, Integer.parseInt(datos[2])); // IDESTADO
-                pstmt.setInt(4, Integer.parseInt(datos[3])); // IDCIUDAD
-                pstmt.setInt(5, Integer.parseInt(datos[4])); // IDTIENDA
-                pstmt.setInt(6, Integer.parseInt(datos[5])); // IDEMPLEADO
+                pstmt.setString(1, datos[0]); 
+                pstmt.setDate(2, java.sql.Date.valueOf(datos[1]));
+                pstmt.setInt(3, Integer.parseInt(datos[2]));
+                pstmt.setInt(4, Integer.parseInt(datos[3]));
+                pstmt.setInt(5, Integer.parseInt(datos[4]));
+                pstmt.setInt(6, Integer.parseInt(datos[5]));
             } else {
-                pstmt.setString(1, datos[0]); // TICKET
-                pstmt.setInt(2, Integer.parseInt(datos[1])); // IDPRODUCTO
-                pstmt.setInt(3, Integer.parseInt(datos[2])); // UNIDADES
-                pstmt.setInt(4, Integer.parseInt(datos[3])); // PRECIO
+                pstmt.setString(1, datos[0]);
+                pstmt.setInt(2, Integer.parseInt(datos[1])); 
+                pstmt.setInt(3, Integer.parseInt(datos[2])); 
+                pstmt.setInt(4, Integer.parseInt(datos[3])); 
             }
             
             // Ejecuta la consulta
@@ -109,58 +108,57 @@ public class ConexionBD {
 public void Procesar(int id, String criterio) {
     ResultSet conjuntoResultados = null;
     
-    String queryTickets = "SELECT TICKETSH.FOLIO, TICKETSD.IDPRODUCTO, TICKETSD.PRECIO " +
-                          "FROM TICKETSD WITH (UPDLOCK, HOLDLOCK) " +
-                          "INNER JOIN TICKETSH ON TICKETSD.TICKET = TICKETSH.FOLIO " +
-                          "INNER JOIN ( " +
-                              "SELECT TICKETSH.FOLIO " +
-                              "FROM TICKETSD " +
-                              "INNER JOIN TICKETSH ON TICKETSD.TICKET = TICKETSH.FOLIO " +
-                              "WHERE TICKETSH." + criterio + " = ? " +
-                              "GROUP BY TICKETSH.FOLIO " +
-                              "HAVING COUNT(DISTINCT TICKETSD.IDPRODUCTO) >= 3 " +
-                          ") AS TicketsFiltrados ON TICKETSH.FOLIO = TicketsFiltrados.FOLIO " +
-                          "WHERE TICKETSH." + criterio + " = ?";
+    String queryTickets = "BEGIN TRANSACTION " +
+        "SELECT S.TICKET, S.IDPRODUCTO, S.PRECIO"+
+        "FROM TICKETSD S"+
+        "INNER JOIN TICKETSH H ON H.FOLIO = S.TICKET"+
+        "WHERE H."+criterio+" = ? AND S.TICKET IN ("+
+        "    SELECT TICKET"+
+        "    FROM TICKETSD"+
+        "    GROUP BY TICKET"+
+        "    HAVING COUNT(DISTINCT IDPRODUCTO) >= 3)";
+
 
     String queryActualizar = "UPDATE TICKETSD SET PRECIO = ? " +
                              "WHERE TICKET = ? AND IDPRODUCTO = ?";
     
     try {
-        // Preparar consulta para seleccionar los tickets
+        
         PreparedStatement ConsultarTickets = connection.prepareStatement(queryTickets);
         ConsultarTickets.setInt(1, id);
         ConsultarTickets.setInt(2, id);
 
-        // Preparar consulta para actualizar los precios
-        PreparedStatement ActualizarPrecios = connection.prepareStatement(queryActualizar);
-        connection.setAutoCommit(false);  // Desactivar autocommit para iniciar la transacción
         
+        PreparedStatement ActualizarPrecios = connection.prepareStatement(queryActualizar);
+        connection.setAutoCommit(false);  
+        connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
         conjuntoResultados = ConsultarTickets.executeQuery();
+        System.out.println("Se realizo el select");
         
         int c = 0;
         while (conjuntoResultados.next()) {
             String ticket = conjuntoResultados.getString("FOLIO");
             int idProducto = conjuntoResultados.getInt("IDPRODUCTO");
             int precio = conjuntoResultados.getInt("PRECIO");
-            int nuevoPrecio = precio + 1;  // Incrementar el precio en 1
+            int nuevoPrecio = precio + 1;  
             
-            // Preparar la actualización del precio
+            
             ActualizarPrecios.setInt(1, nuevoPrecio);
             ActualizarPrecios.setString(2, ticket);
             ActualizarPrecios.setInt(3, idProducto);
             
-            ActualizarPrecios.executeUpdate();  // Ejecutar la actualización
+            ActualizarPrecios.executeUpdate();  
             System.out.println("Registro #" + c + " actualizado. Ticket: " + ticket + ", Producto: " + idProducto);
             c++;
         }
         
-        connection.commit();  // Confirmar la transacción
+        connection.commit();  
         System.out.println("Transacción completada con éxito.");
     } catch (SQLException excepcionSql) {
         excepcionSql.printStackTrace();
         try {
             if (connection != null) {
-                connection.rollback();  // Revertir los cambios en caso de error
+                connection.rollback();  
                 System.out.println("Transacción revertida.");
             }
         } catch (SQLException ex) {
@@ -169,7 +167,6 @@ public void Procesar(int id, String criterio) {
     } finally {
         try {
             if (conjuntoResultados != null) conjuntoResultados.close();
-            if (connection != null) connection.setAutoCommit(true);  // Volver a activar autocommit
         } catch (SQLException e) {
             e.printStackTrace();
         }
