@@ -117,9 +117,8 @@ public void Procesar(int id, String criterio) {
         "    FROM TICKETSD"+
         "    GROUP BY TICKET"+
         "    HAVING COUNT(DISTINCT IDPRODUCTO) >= 3)";
-
-
-    String queryActualizar = "UPDATE TICKETSD SET PRECIO = ? " +
+        
+    String queryActualizar = "UPDATE TICKETSD  SET PRECIO = ? " +
                              "WHERE TICKET = ? AND IDPRODUCTO = ?";
     
     try {
@@ -131,7 +130,6 @@ public void Procesar(int id, String criterio) {
         
         PreparedStatement ActualizarPrecios = connection.prepareStatement(queryActualizar);
         connection.setAutoCommit(false);  
-        connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
         conjuntoResultados = ConsultarTickets.executeQuery();
         System.out.println("Se realizo el select");
         
