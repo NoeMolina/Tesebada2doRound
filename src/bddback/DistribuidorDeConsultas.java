@@ -91,7 +91,23 @@ public class DistribuidorDeConsultas {
                 fragmentos = ConfigBDD.obtenerFragmentos();
             }
         }
-
+        if (Mayconsulta.contains("INSERT")) {
+            
+        // Separar los valores usando la cadena 'VALUES'
+        String[] parts = Mayconsulta.split("VALUES");
+        // Obtener la parte que contiene los valores
+        String valuesPart = parts[1].trim();
+        
+        // Eliminar los paréntesis y dividir por comas
+        String[] values = valuesPart.replaceAll("[()]", "").split(",");
+        
+        // Obtener el estado, que está en la posición 2 (índice 2)
+        String estado = values[2].trim().replace("'", ""); // Quitar espacios y comillas
+        System.out.println("Estado: " + estado);
+        
+        fragmentos = ConfigBDD.obtenerFragmentosEstado(estado);
+        ejecutarInsert(consulta);
+        }
     }
 
     // Método para ejecutar la consulta en cada fragmento obtenido
@@ -101,6 +117,38 @@ public class DistribuidorDeConsultas {
                 tableModel = fragmento.select(consultaCorregida, tableModel);
         }
         return tableModel;
+    }
+    
+    public boolean ejecutarInsert(String Insert) {
+        boolean ready = false;
+        for (Fragmentos fragmento : fragmentos) {
+            if (fragmento.insert(Insert)) {
+                ready = true;
+            } else {
+                ready = false;
+                break;
+            }
+        }
+        if (ready) {
+            commit();
+        } else{
+            rollback();
+        }
+        return ready;
+    }
+    
+    private void rollback() {
+        System.out.println("bddback.DistribuidorDeConsultas.rollback() fue rollback");
+        for (Fragmentos fragmento : fragmentos) {
+            fragmento.rollback();
+        }
+    }
+    
+    private void commit(){    
+        System.out.println("bddback.DistribuidorDeConsultas.commit()");
+        for (Fragmentos fragmento : fragmentos) {
+            fragmento.commit();
+        }
     }
 
     public void imprimirFragmentos() {

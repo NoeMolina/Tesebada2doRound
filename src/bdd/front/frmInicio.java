@@ -41,6 +41,11 @@ public class frmInicio extends javax.swing.JFrame {
         });
 
         btnTransaccion.setText("Transacciones");
+        btnTransaccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTransaccionActionPerformed(evt);
+            }
+        });
 
         btnConsultas.setText("Consultas");
         btnConsultas.addActionListener(new java.awt.event.ActionListener() {
@@ -92,6 +97,12 @@ public class frmInicio extends javax.swing.JFrame {
         frmConsultas consultas = new frmConsultas(this, true);
         consultas.setVisible(true);
     }//GEN-LAST:event_btnConsultasActionPerformed
+
+    private void btnTransaccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransaccionActionPerformed
+        // TODO add your handling code here:
+        frmTransacciones transacciones = new frmTransacciones(this, true);
+        transacciones.setVisible(true);
+    }//GEN-LAST:event_btnTransaccionActionPerformed
 
     /**
      * @param args the command line arguments
