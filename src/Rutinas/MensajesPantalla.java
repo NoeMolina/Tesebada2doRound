@@ -18,5 +18,5 @@ public class MensajesPantalla {
         public static void TareaconFallo(String TipoTarea){
                 JOptionPane.showMessageDialog(null, TipoTarea, "Error", JOptionPane.ERROR_MESSAGE);
     }
-    
+
 }
