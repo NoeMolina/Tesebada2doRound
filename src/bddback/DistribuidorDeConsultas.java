@@ -36,15 +36,16 @@ public class DistribuidorDeConsultas {
         String Zona;
         String Estado;
         String Mayconsulta = consulta.toUpperCase();
+        consultaCorregida = Mayconsulta;
 
         if (Mayconsulta.contains("SELECT")) {
-            if (Mayconsulta.contains("WHERE")) {
+            if (Mayconsulta.contains("WHERE ZONA") || Mayconsulta.contains("WHERE ESTADO")) {
                 // Encontrar la posición del "WHERE"
                 int inicioWhere = consulta.toLowerCase().indexOf("where");
 
                 // Encontrar la posición del paréntesis de cierre ')'
                 int cierreParentesis = consulta.indexOf(')', inicioWhere);
-                if (inicioWhere != -1 && cierreParentesis != -1){
+                if (inicioWhere != -1 && cierreParentesis != -1) {
                     consultaCorregida = consulta.substring(0, inicioWhere) + consulta.substring(cierreParentesis + 1);
                 }
                 //consulta select con zona
@@ -72,41 +73,88 @@ public class DistribuidorDeConsultas {
                     }
                 }
                 if (Mayconsulta.contains("ESTADO =")) {
+                    int inicio = consulta.indexOf("'");
+                    int fin = consulta.indexOf("'", inicio + 1);
+                    Estado = consulta.substring(inicio + 1, fin);
+                    System.out.println(Estado);
 
-                    String regex = "ESTADO\\s*=\\s*([A-Za-z]+)";
-                    Pattern pattern = Pattern.compile(regex);
-                    Matcher matcher = pattern.matcher(consulta);
-
-                    if (matcher.find()) {
-                        // matcher.group(1) devuelve la primera coincidencia capturada por los paréntesis en la regex
-                        Estado = matcher.group(1);
-                        System.out.println(Estado);
-                        fragmentos = ConfigBDD.obtenerFragmentosEstado(Estado);
-
-                    } else {
-                        MensajesPantalla.TareaconFallo("Error de query");
-                    }
+                    fragmentos = ConfigBDD.obtenerFragmentosEstado(Estado);
+                    System.out.println(consultaCorregida);
+                } else {
+                    MensajesPantalla.TareaconFallo("Error de sintaxis");
                 }
             } else {
                 fragmentos = ConfigBDD.obtenerFragmentos();
             }
         }
         if (Mayconsulta.contains("INSERT")) {
-            
-        // Separar los valores usando la cadena 'VALUES'
-        String[] parts = Mayconsulta.split("VALUES");
-        // Obtener la parte que contiene los valores
-        String valuesPart = parts[1].trim();
-        
-        // Eliminar los paréntesis y dividir por comas
-        String[] values = valuesPart.replaceAll("[()]", "").split(",");
-        
-        // Obtener el estado, que está en la posición 2 (índice 2)
-        String estado = values[2].trim().replace("'", ""); // Quitar espacios y comillas
-        System.out.println("Estado: " + estado);
-        
-        fragmentos = ConfigBDD.obtenerFragmentosEstado(estado);
-        ejecutarInsert(consulta);
+
+            // Separar los valores usando la cadena 'VALUES'
+            String[] parts = Mayconsulta.split("VALUES");
+            // Obtener la parte que contiene los valores
+            String valuesPart = parts[1].trim();
+
+            // Eliminar los paréntesis y dividir por comas
+            String[] values = valuesPart.replaceAll("[()]", "").split(",");
+
+            // Obtener el estado, que está en la posición 2 (índice 2)
+            String estado = values[2].trim().replace("'", ""); // Quitar espacios y comillas
+            System.out.println("Estado: " + estado);
+
+            fragmentos = ConfigBDD.obtenerFragmentosEstado(estado);
+            ejecutarTran(consulta);
+        }
+        //ejecuta una transaccion
+        if (Mayconsulta.contains("UPDATE") || Mayconsulta.contains("DELETE")) {
+            if (Mayconsulta.contains("WHERE ZONA") || Mayconsulta.contains("WHERE ESTADO")) {
+                // Encontrar la posición del "WHERE"
+                int inicioWhere = consulta.toLowerCase().indexOf("where");
+
+                // Encontrar la posición del paréntesis de cierre ')'
+                int cierreParentesis = consulta.indexOf(')', inicioWhere);
+                if (inicioWhere != -1 && cierreParentesis != -1) {
+                    consultaCorregida = consulta.substring(0, inicioWhere) + consulta.substring(cierreParentesis + 1);
+                }
+                //consulta select con zona
+                if (Mayconsulta.contains("ZONA NOT IN")) {
+                    int inicio = consulta.indexOf('(');
+                    int fin = consulta.indexOf(')', inicio);
+
+                    if (inicio != -1 && fin != -1) {
+                        Zona = consulta.substring(inicio + 1, fin);
+                        fragmentos = ConfigBDD.obtenerFragmentosZona(Zona, true);
+
+                    } else {
+                        MensajesPantalla.TareaconFallo("Error de sintaxis");
+                    }
+                }
+                if (Mayconsulta.contains("ZONA IN")) {
+                    int inicio = consulta.indexOf('(');
+                    int fin = consulta.indexOf(')', inicio);
+
+                    if (inicio != -1 && fin != -1) {
+                        Zona = consulta.substring(inicio + 1, fin);
+                        fragmentos = ConfigBDD.obtenerFragmentosZona(Zona, false);
+                    } else {
+                        MensajesPantalla.TareaconFallo("Error de sintaxis");
+                    }
+                }
+                if (Mayconsulta.contains("ESTADO =")) {
+                    int inicio = consulta.indexOf("'");
+                    int fin = consulta.indexOf("'", inicio + 1);
+                    Estado = consulta.substring(inicio + 1, fin);
+                    System.out.println(Estado);
+
+                    fragmentos = ConfigBDD.obtenerFragmentosEstado(Estado);
+                    System.out.println(consultaCorregida);
+
+                } else {
+                    MensajesPantalla.TareaconFallo("Error de sintaxis");
+                }
+            } else {
+                fragmentos = ConfigBDD.obtenerFragmentos();
+            }
+            ejecutarTran(consultaCorregida);
         }
     }
 
@@ -114,15 +162,15 @@ public class DistribuidorDeConsultas {
     public DefaultTableModel ejecutarSelect(DefaultTableModel tableModel) {
         for (Fragmentos fragmento : fragmentos) {
             // Aquí pasamos el modelo de tabla y la consulta a cada fragmento
-                tableModel = fragmento.select(consultaCorregida, tableModel);
+            tableModel = fragmento.select(consultaCorregida, tableModel);
         }
         return tableModel;
     }
-    
-    public boolean ejecutarInsert(String Insert) {
+
+    public boolean ejecutarTran(String transaccion) {
         boolean ready = false;
         for (Fragmentos fragmento : fragmentos) {
-            if (fragmento.insert(Insert)) {
+            if (fragmento.ejecutaTransaccion(transaccion)) {
                 ready = true;
             } else {
                 ready = false;
@@ -131,20 +179,20 @@ public class DistribuidorDeConsultas {
         }
         if (ready) {
             commit();
-        } else{
+        } else {
             rollback();
         }
         return ready;
     }
-    
+
     private void rollback() {
         System.out.println("bddback.DistribuidorDeConsultas.rollback() fue rollback");
         for (Fragmentos fragmento : fragmentos) {
             fragmento.rollback();
         }
     }
-    
-    private void commit(){    
+
+    private void commit() {
         System.out.println("bddback.DistribuidorDeConsultas.commit()");
         for (Fragmentos fragmento : fragmentos) {
             fragmento.commit();

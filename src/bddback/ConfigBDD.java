@@ -293,6 +293,7 @@ public class ConfigBDD {
     }
 
     public static List<Fragmentos> obtenerFragmentosEstado(String estado) {
+        //QUERY PARA OBTENER LA ZONA LA QUE PERTENECE EL ESTADO
         String query = "SELECT ZONAGEOGRAFICA FROM CRITERIODISTRIBUCION WHERE ESTADO = ?";
         PreparedStatement stmt = null;
         ResultSet rs = null;

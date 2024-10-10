@@ -5,7 +5,7 @@
             <url>src/bddback/DistribuidorDeConsultas.java</url>
             <bookmark id="1">
                 <name/>
-                <line>119</line>
+                <line>167</line>
                 <key/>
             </bookmark>
         </file>
@@ -17,6 +17,7 @@
             <file>file:/D:/sem8tesebada/BDD/src/bddback/Fragmentos.java</file>
             <file>file:/D:/sem8tesebada/BDD/src/bddback/ConfigBDD.java</file>
             <file>file:/D:/sem8tesebada/BDD/src/bdd/front/frmInicio.java</file>
+            <file>file:/D:/sem8tesebada/BDD/src/bdd/front/frmConsultas.java</file>
         </group>
     </open-files>
 </project-private>

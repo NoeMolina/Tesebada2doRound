@@ -8,6 +8,7 @@ package bddback;
  *
  * @author soule
  */
+import Rutinas.MensajesPantalla;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-public class Fragmentos implements Runnable {
+public class Fragmentos {
 
     private String tipoBaseDatos;
     private String url;
@@ -45,10 +46,8 @@ public class Fragmentos implements Runnable {
                 throw new IllegalArgumentException("Tipo de base de datos no soportado: " + tipoBaseDatos);
         }
     }
-
-    @Override
-    public void run() {
-        try {
+    private void crearConneccion(){
+            try {
             this.conn = DriverManager.getConnection(url, usuario, contraseña);
             if (conn != null) {
                 conn.setAutoCommit(false); // Desactivar auto commit para manejar las transacciones manualmente
@@ -57,12 +56,14 @@ public class Fragmentos implements Runnable {
         } catch (SQLException e) {
             System.err.println("Error al conectar con la base de datos: " + e.getMessage());
         }
-    }
+}
 
     public DefaultTableModel select(String query, DefaultTableModel tableModel) {
         ResultSet rs = null;
 
-        try (Connection conn = DriverManager.getConnection(url, usuario, contraseña); Statement stmt = conn.createStatement()) {
+        try {
+            crearConneccion();
+            Statement stmt = conn.createStatement();
             rs = stmt.executeQuery(query);
             // Obtener los nombres de las columnas del ResultSet
             ResultSetMetaData metaData;
@@ -101,6 +102,7 @@ public class Fragmentos implements Runnable {
                     Object[] fila = new Object[columnCount];
                     for (int i = 0; i < columnCount; i++) {
                         fila[i] = rs.getObject(i + 1);
+                        System.out.println("bddback.Fragmentos.select()"+ i);
                     }
                     tableModel.addRow(fila);
                 }
@@ -120,30 +122,19 @@ public class Fragmentos implements Runnable {
         return tableModel;
     }
 
-    public boolean insert(String query) {
+    public boolean ejecutaTransaccion(String query) {
         boolean resultado = false;
-
-        try (Connection conn = DriverManager.getConnection(url, usuario, contraseña); Statement stmt = conn.createStatement()) {
-
+        try {
+            crearConneccion();
+            Statement stmt = conn.createStatement();
             int filasAfectadas = stmt.executeUpdate(query);
             resultado = filasAfectadas > 0;  // Si se afectó al menos una fila, la inserción fue exitosa.
 
         } catch (SQLException e) {
-            System.err.println("Error al ejecutar la inserción: " + e.getMessage());
+            System.err.println("Error al ejecutar la transaccion: " + e.getMessage());
+            MensajesPantalla.TareaconFallo("Error al ejecutar la insercion verifique la consulta");
         }
 
-        return resultado;
-    }
-
-    public boolean delete(String query) {
-        boolean resultado = false;
-
-        try (Statement stmt = conn.createStatement()) {
-            int filasAfectadas = stmt.executeUpdate(query);
-            resultado = filasAfectadas > 0;  // Si se afectó al menos una fila, la eliminación fue exitosa.
-        } catch (SQLException e) {
-            System.err.println("Error al ejecutar la eliminación: " + e.getMessage());
-        }
         return resultado;
     }
 
@@ -153,6 +144,7 @@ public class Fragmentos implements Runnable {
             if (conn != null) {
                 conn.commit();
                 System.out.println("Transacción confirmada con éxito.");
+                closeConnection();
             }
         } catch (SQLException e) {
             System.err.println("Error al realizar el commit: " + e.getMessage());
@@ -164,6 +156,7 @@ public class Fragmentos implements Runnable {
             if (conn != null) {
                 conn.rollback();
                 System.out.println("Transacción revertida.");
+                closeConnection();
             }
         } catch (SQLException e) {
             System.err.println("Error al realizar el rollback: " + e.getMessage());
