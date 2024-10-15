@@ -9,6 +9,8 @@ package bddback;
  * @author soule
  */
 import Rutinas.MensajesPantalla;
+import java.io.IOException;
+import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -19,18 +21,22 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-public class Fragmentos {
+public class Fragmentos extends Thread{
 
     private String tipoBaseDatos;
     private String url;
+    private String host;
     private String usuario;
     private String contraseña;
     private Connection conn;
+    private String query;
+    private int queryStatus = 0;
 
     public Fragmentos(String tipoBaseDatos, String host, String nombreBaseDatos, String usuario, String contraseña) {
         this.usuario = usuario.toLowerCase();
         this.contraseña = contraseña.toLowerCase();
         this.tipoBaseDatos = tipoBaseDatos;
+        this.host = host;
 
         switch (tipoBaseDatos.toLowerCase()) {
             case "postgresql":
@@ -46,8 +52,34 @@ public class Fragmentos {
                 throw new IllegalArgumentException("Tipo de base de datos no soportado: " + tipoBaseDatos);
         }
     }
+    
+    public void setQuery(String Query){
+        this.query = Query;
+    }
+    public int queryStatus(){
+        return queryStatus;
+    }
+    
+    private boolean hacerPing() {
+        try {
+            InetAddress servidorInet = InetAddress.getByName(host);
+            System.out.println("Haciendo ping a " + host + "...");
+
+            // Verifica si el servidor es alcanzable dentro del tiempo límite
+            return servidorInet.isReachable(5000);
+
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error: " + e.getMessage());
+            return false;
+        }
+    }
+    
     private void crearConneccion(){
             try {
+                if (!hacerPing()) {
+                    MensajesPantalla.TareaconFallo("Error al conectarse con el servidor");
+                    return;
+                }
             this.conn = DriverManager.getConnection(url, usuario, contraseña);
             if (conn != null) {
                 conn.setAutoCommit(false); // Desactivar auto commit para manejar las transacciones manualmente
@@ -55,6 +87,7 @@ public class Fragmentos {
             }
         } catch (SQLException e) {
             System.err.println("Error al conectar con la base de datos: " + e.getMessage());
+            MensajesPantalla.TareaconFallo("Error al conectarse con el Fragmento");
         }
 }
 
@@ -107,8 +140,11 @@ public class Fragmentos {
                     tableModel.addRow(fila);
                 }
             }
+            commit();
         } catch (SQLException e) {
             System.err.println("Error al ejecutar la consulta: " + e.getMessage());
+            rollback();
+            MensajesPantalla.TareaconFallo("Instruccion no valida");
         } finally {
             try {
                 if (rs != null) {
@@ -122,20 +158,24 @@ public class Fragmentos {
         return tableModel;
     }
 
-    public boolean ejecutaTransaccion(String query) {
-        boolean resultado = false;
+    @Override
+    public void run() {
         try {
             crearConneccion();
             Statement stmt = conn.createStatement();
             int filasAfectadas = stmt.executeUpdate(query);
-            resultado = filasAfectadas > 0;  // Si se afectó al menos una fila, la inserción fue exitosa.
+            if (filasAfectadas > 0) {     // Si se afectó al menos una fila, la transaccion fue exitosa.
+                //la transaccion fue con exito
+                queryStatus = 1;
+            } else {
+                //fallo la transaccion
+                queryStatus = 2;
+            }
 
         } catch (SQLException e) {
             System.err.println("Error al ejecutar la transaccion: " + e.getMessage());
             MensajesPantalla.TareaconFallo("Error al ejecutar la insercion verifique la consulta");
         }
-
-        return resultado;
     }
 
     //implementar metodo is readytocommit

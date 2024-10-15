@@ -167,38 +167,10 @@ public class DistribuidorDeConsultas {
         return tableModel;
     }
 
-    public boolean ejecutarTran(String transaccion) {
-        boolean ready = false;
-        for (Fragmentos fragmento : fragmentos) {
-            if (fragmento.ejecutaTransaccion(transaccion)) {
-                ready = true;
-            } else {
-                ready = false;
-                break;
-            }
-        }
-        if (ready) {
-            commit();
-        } else {
-            rollback();
-        }
-        return ready;
+    public void ejecutarTran(String transaccion) {
+        Commit2Fases C2F = new Commit2Fases(transaccion, fragmentos);
+        C2F.start();
     }
-
-    private void rollback() {
-        System.out.println("bddback.DistribuidorDeConsultas.rollback() fue rollback");
-        for (Fragmentos fragmento : fragmentos) {
-            fragmento.rollback();
-        }
-    }
-
-    private void commit() {
-        System.out.println("bddback.DistribuidorDeConsultas.commit()");
-        for (Fragmentos fragmento : fragmentos) {
-            fragmento.commit();
-        }
-    }
-
     public void imprimirFragmentos() {
         for (Fragmentos fragmento : fragmentos) {
             System.out.println(fragmento.toString());
