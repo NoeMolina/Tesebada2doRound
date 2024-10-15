@@ -26,7 +26,7 @@ public class ConfigBDD {
 
     static String stringConnection = "jdbc:sqlserver://localhost:1433;database=BBDCONFIG;encrypt=true;trustServerCertificate=true;";
     ;
-     static Connection connection = null;
+    static Connection connection = null;
     static String user = "sa";
     static String password = "sa";
     static String prstmInsertTable = "INSERT INTO TBD (NOM) VALUES (?)";

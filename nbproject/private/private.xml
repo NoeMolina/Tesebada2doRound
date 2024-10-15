@@ -5,7 +5,7 @@
             <url>src/bddback/DistribuidorDeConsultas.java</url>
             <bookmark id="1">
                 <name/>
-                <line>167</line>
+                <line>168</line>
                 <key/>
             </bookmark>
         </file>
@@ -14,11 +14,11 @@
         <group>
             <file>file:/D:/sem8tesebada/BDD/src/bddback/DistribuidorDeConsultas.java</file>
             <file>file:/D:/sem8tesebada/BDD/src/bdd/front/frmTransacciones.java</file>
-            <file>file:/D:/sem8tesebada/BDD/src/bddback/Fragmentos.java</file>
-            <file>file:/D:/sem8tesebada/BDD/src/bddback/ConfigBDD.java</file>
+            <file>file:/D:/sem8tesebada/BDD/src/bdd/front/CrearFragmento.java</file>
+            <file>file:/D:/sem8tesebada/BDD/src/bdd/front/frmMoficarFragmento.java</file>
+            <file>file:/D:/sem8tesebada/BDD/src/bddback/Commit2Fases.java</file>
             <file>file:/D:/sem8tesebada/BDD/src/bdd/front/frmInicio.java</file>
             <file>file:/D:/sem8tesebada/BDD/src/bdd/front/frmConsultas.java</file>
-            <file>file:/D:/sem8tesebada/BDD/src/bddback/Commit2Fases.java</file>
         </group>
     </open-files>
 </project-private>

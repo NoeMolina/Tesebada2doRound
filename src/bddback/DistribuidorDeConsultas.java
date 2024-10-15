@@ -56,12 +56,12 @@ public class DistribuidorDeConsultas {
                     if (inicio != -1 && fin != -1) {
                         Zona = consulta.substring(inicio + 1, fin);
                         fragmentos = ConfigBDD.obtenerFragmentosZona(Zona, true);
-
+                        System.out.println("entro al if");
                     } else {
+                        System.out.println("entro al else");
                         MensajesPantalla.TareaconFallo("Error de sintaxis");
                     }
-                }
-                if (Mayconsulta.contains("ZONA IN")) {
+                } else if (Mayconsulta.contains("ZONA IN")) {
                     int inicio = consulta.indexOf('(');
                     int fin = consulta.indexOf(')', inicio);
 
@@ -71,8 +71,7 @@ public class DistribuidorDeConsultas {
                     } else {
                         MensajesPantalla.TareaconFallo("Error de sintaxis");
                     }
-                }
-                if (Mayconsulta.contains("ESTADO =")) {
+                } else if (Mayconsulta.contains("ESTADO =")) {
                     int inicio = consulta.indexOf("'");
                     int fin = consulta.indexOf("'", inicio + 1);
                     Estado = consulta.substring(inicio + 1, fin);
@@ -103,6 +102,7 @@ public class DistribuidorDeConsultas {
 
             fragmentos = ConfigBDD.obtenerFragmentosEstado(estado);
             ejecutarTran(consulta);
+            return;
         }
         //ejecuta una transaccion
         if (Mayconsulta.contains("UPDATE") || Mayconsulta.contains("DELETE")) {
@@ -123,12 +123,12 @@ public class DistribuidorDeConsultas {
                     if (inicio != -1 && fin != -1) {
                         Zona = consulta.substring(inicio + 1, fin);
                         fragmentos = ConfigBDD.obtenerFragmentosZona(Zona, true);
-
+                        System.out.println("entro al if");
                     } else {
+                        System.out.println("entro al else");
                         MensajesPantalla.TareaconFallo("Error de sintaxis");
                     }
-                }
-                if (Mayconsulta.contains("ZONA IN")) {
+                } else if (Mayconsulta.contains("ZONA IN")) {
                     int inicio = consulta.indexOf('(');
                     int fin = consulta.indexOf(')', inicio);
 
@@ -138,8 +138,7 @@ public class DistribuidorDeConsultas {
                     } else {
                         MensajesPantalla.TareaconFallo("Error de sintaxis");
                     }
-                }
-                if (Mayconsulta.contains("ESTADO =")) {
+                } else if (Mayconsulta.contains("ESTADO =")) {
                     int inicio = consulta.indexOf("'");
                     int fin = consulta.indexOf("'", inicio + 1);
                     Estado = consulta.substring(inicio + 1, fin);
@@ -147,7 +146,6 @@ public class DistribuidorDeConsultas {
 
                     fragmentos = ConfigBDD.obtenerFragmentosEstado(Estado);
                     System.out.println(consultaCorregida);
-
                 } else {
                     MensajesPantalla.TareaconFallo("Error de sintaxis");
                 }
@@ -163,6 +161,9 @@ public class DistribuidorDeConsultas {
         for (Fragmentos fragmento : fragmentos) {
             // Aquí pasamos el modelo de tabla y la consulta a cada fragmento
             tableModel = fragmento.select(consultaCorregida, tableModel);
+            if (tableModel == null) {
+                break;
+            }
         }
         return tableModel;
     }
@@ -171,6 +172,7 @@ public class DistribuidorDeConsultas {
         Commit2Fases C2F = new Commit2Fases(transaccion, fragmentos);
         C2F.start();
     }
+
     public void imprimirFragmentos() {
         for (Fragmentos fragmento : fragmentos) {
             System.out.println(fragmento.toString());

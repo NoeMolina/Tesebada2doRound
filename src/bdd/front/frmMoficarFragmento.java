@@ -10,12 +10,12 @@ import javax.swing.JOptionPane;
  *
  * @author soule
  */
-public class CrearFragmento extends javax.swing.JDialog {
+public class frmMoficarFragmento extends javax.swing.JDialog {
 
     /**
      * Creates new form CrearFragmento
      */
-    public CrearFragmento(java.awt.Dialog parent, boolean modal) {
+    public frmMoficarFragmento(java.awt.Dialog parent, boolean modal) {
         super(parent, modal);
         initComponents();
         ConfigBDD.llenarComboTabla(CbxTabla);
@@ -34,7 +34,6 @@ public class CrearFragmento extends javax.swing.JDialog {
         lblNomTabla = new javax.swing.JLabel();
         CbxZona = new javax.swing.JComboBox<>();
         lblnomFragmento = new javax.swing.JLabel();
-        txtNomFragmento = new javax.swing.JTextField();
         lblTipoBBD = new javax.swing.JLabel();
         cbxGestores = new javax.swing.JComboBox<>();
         lblIP = new javax.swing.JLabel();
@@ -51,6 +50,7 @@ public class CrearFragmento extends javax.swing.JDialog {
         btnGuardar = new javax.swing.JButton();
         lblnombdd = new javax.swing.JLabel();
         txtNomBDD = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -62,8 +62,6 @@ public class CrearFragmento extends javax.swing.JDialog {
 
         lblnomFragmento.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblnomFragmento.setText("Nom Fragmento");
-
-        txtNomFragmento.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         lblTipoBBD.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTipoBBD.setText("Gestor BDD");
@@ -112,6 +110,8 @@ public class CrearFragmento extends javax.swing.JDialog {
 
         txtNomBDD.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
+        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,13 +126,12 @@ public class CrearFragmento extends javax.swing.JDialog {
                                 .addGap(18, 18, 18)
                                 .addComponent(CbxTabla, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblnomFragmento, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtNomFragmento))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblnombdd, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblnombdd, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblnomFragmento, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(cbxGestores, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, Short.MAX_VALUE))
@@ -178,8 +177,8 @@ public class CrearFragmento extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblnomFragmento)
-                    .addComponent(txtNomFragmento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(3, 3, 3)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblnombdd)
                     .addComponent(txtNomBDD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -229,7 +228,7 @@ public class CrearFragmento extends javax.swing.JDialog {
         }
         
         
-        ConfigBDD.InsertarFragmento(CbxTabla.getSelectedItem().toString(), txtNomFragmento.getText(), cbxGestores.getSelectedItem().toString(),txtNomBDD.getText(), txtIP.getText(), txtUsuario.getText(), txtContraseña.getText(), Estado, CbxZona.getSelectedItem().toString());
+       ´pendiente// ConfigBDD.InsertarFragmento(CbxTabla.getSelectedItem().toString(), txtNomFragmento.getText(), cbxGestores.getSelectedItem().toString(),txtNomBDD.getText(), txtIP.getText(), txtUsuario.getText(), txtContraseña.getText(), Estado, CbxZona.getSelectedItem().toString());
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -239,6 +238,7 @@ public class CrearFragmento extends javax.swing.JDialog {
     private javax.swing.ButtonGroup bgrpEstado;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox<String> cbxGestores;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel lblContraseña;
     private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblIP;
@@ -252,7 +252,6 @@ public class CrearFragmento extends javax.swing.JDialog {
     private javax.swing.JTextField txtContraseña;
     private javax.swing.JTextField txtIP;
     private javax.swing.JTextField txtNomBDD;
-    private javax.swing.JTextField txtNomFragmento;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

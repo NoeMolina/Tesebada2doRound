@@ -96,11 +96,14 @@ public class frmConsultas extends javax.swing.JDialog {
         // Crear el modelo de tabla con las columnas adecuadas (suponiendo que son las mismas en todos los fragmentos)
         DefaultTableModel tableModel = null;
         // Ejecutar la consulta y llenar el modelo de la tabla
-        tableModel =  DDC.ejecutarSelect(tableModel);
-
+        tableModel = DDC.ejecutarSelect(tableModel);
+        
+        if (!(tableModel == null)) {
+            tblResultado.setModel(tableModel);
+            this.repaint();
+        }
         // Asignar el modelo de tabla lleno al JTable
-        tblResultado.setModel(tableModel);
-        this.repaint();
+
     }//GEN-LAST:event_btnConsultarActionPerformed
 
 

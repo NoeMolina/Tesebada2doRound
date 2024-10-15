@@ -111,40 +111,19 @@ public class Fragmentos extends Thread{
                     tableModel.addColumn(metaData.getColumnLabel(i));
                 }
             }
-
-            // Añadir los nombres de las columnas al modelo
-            // Agregar las filas al modelo
-            if (tipoBaseDatos.equals("postgresql")) {
-                while (rs.next()) {
-                    Object[] fila = new Object[columnCount];
-                    for (int i = 0; i < columnCount; i++) {
-                        Object valor = rs.getObject(i + 1);
-                        // Verificar si el valor es de tipo Money
-                        if (valor instanceof java.math.BigDecimal) {
-                            // Convierte BigDecimal a String o double
-                            fila[i] = ((java.math.BigDecimal) valor).doubleValue(); // o valor.toString();
-                        } else {
-                            fila[i] = valor;
-                        }
-                        System.out.print(i + " ");
-                    }
-                    tableModel.addRow(fila);
-                }
-            } else {
                 while (rs.next()) {
                     Object[] fila = new Object[columnCount];
                     for (int i = 0; i < columnCount; i++) {
                         fila[i] = rs.getObject(i + 1);
-                        System.out.println("bddback.Fragmentos.select()"+ i);
                     }
                     tableModel.addRow(fila);
                 }
-            }
             commit();
         } catch (SQLException e) {
             System.err.println("Error al ejecutar la consulta: " + e.getMessage());
             rollback();
             MensajesPantalla.TareaconFallo("Instruccion no valida");
+            return null;
         } finally {
             try {
                 if (rs != null) {
