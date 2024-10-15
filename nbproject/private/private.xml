@@ -14,8 +14,10 @@
         <group>
             <file>file:/D:/sem8tesebada/BDD/src/bddback/DistribuidorDeConsultas.java</file>
             <file>file:/D:/sem8tesebada/BDD/src/bdd/front/frmTransacciones.java</file>
+            <file>file:/D:/sem8tesebada/BDD/src/bdd/front/ConfigOpcion.java</file>
             <file>file:/D:/sem8tesebada/BDD/src/bdd/front/CrearFragmento.java</file>
-            <file>file:/D:/sem8tesebada/BDD/src/bdd/front/frmMoficarFragmento.java</file>
+            <file>file:/D:/sem8tesebada/BDD/src/bdd/front/frmModificarFragmento.java</file>
+            <file>file:/D:/sem8tesebada/BDD/src/bddback/ConfigBDD.java</file>
             <file>file:/D:/sem8tesebada/BDD/src/bddback/Commit2Fases.java</file>
             <file>file:/D:/sem8tesebada/BDD/src/bdd/front/frmInicio.java</file>
             <file>file:/D:/sem8tesebada/BDD/src/bdd/front/frmConsultas.java</file>

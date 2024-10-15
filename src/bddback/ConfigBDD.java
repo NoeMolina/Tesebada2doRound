@@ -32,6 +32,7 @@ public class ConfigBDD {
     static String prstmInsertTable = "INSERT INTO TBD (NOM) VALUES (?)";
     static String prstmInsertAtributos = "INSERT INTO TBDATRIBUTOS (NOMTD, NOMATRIBUTO, TIPODATO) VALUES (?, ?, ?)";
     static String prstmInsertarFragmento = "INSERT INTO FRAGMENTO (NOMTD, NOMFRAGMENTO, NOMBDD,TIPOBDD, DIRECCIONIP, USUARIO, CONTRASEÑA, ESTADO, ZONADISTRIBUCION) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    static String prstmDeleteFragmento = "DELETE FROM FRAGMENTO WHERE NOMFRAGMENTO = ?";
     static String prstmObtenerFragmentoNOT = "SELECT * FROM FRAGMENTO WHERE ZONADISTRIBUCION != ?";
     static String prstmObtenerFragmentoIN = "SELECT * FROM FRAGMENTO WHERE ZONADISTRIBUCION = ?";
     static String prstmObtenerFragmento = "SELECT * FROM FRAGMENTO";
@@ -130,7 +131,7 @@ public class ConfigBDD {
         try {
             connectBDD();
             stmt = connection.prepareStatement(sql);
-            stmt.setString(0, NOMTD);
+            stmt.setString(1, NOMTD);
             rs = stmt.executeQuery();
 
             while (rs.next()) {

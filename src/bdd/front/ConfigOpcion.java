@@ -133,6 +133,8 @@ public class ConfigOpcion extends javax.swing.JDialog {
 
     private void btnConfigFragmentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfigFragmentoActionPerformed
         // TODO add your handling code here:
+        frmModificarFragmento modFR = new frmModificarFragmento(this, true);
+        modFR.setVisible(true);
     }//GEN-LAST:event_btnConfigFragmentoActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed

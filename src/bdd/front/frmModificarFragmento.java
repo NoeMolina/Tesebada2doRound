@@ -10,12 +10,12 @@ import javax.swing.JOptionPane;
  *
  * @author soule
  */
-public class frmMoficarFragmento extends javax.swing.JDialog {
+public class frmModificarFragmento extends javax.swing.JDialog {
 
     /**
      * Creates new form CrearFragmento
      */
-    public frmMoficarFragmento(java.awt.Dialog parent, boolean modal) {
+    public frmModificarFragmento(java.awt.Dialog parent, boolean modal) {
         super(parent, modal);
         initComponents();
         ConfigBDD.llenarComboTabla(CbxTabla);
@@ -50,7 +50,7 @@ public class frmMoficarFragmento extends javax.swing.JDialog {
         btnGuardar = new javax.swing.JButton();
         lblnombdd = new javax.swing.JLabel();
         txtNomBDD = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbxFragmento = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -88,6 +88,11 @@ public class frmMoficarFragmento extends javax.swing.JDialog {
         lblZonaDistribucion.setText("ZonaDistribucion");
 
         CbxTabla.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        CbxTabla.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                CbxTablaItemStateChanged(evt);
+            }
+        });
 
         lblEstado.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblEstado.setText("Estado");
@@ -110,7 +115,7 @@ public class frmMoficarFragmento extends javax.swing.JDialog {
 
         txtNomBDD.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cbxFragmento.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,7 +136,7 @@ public class frmMoficarFragmento extends javax.swing.JDialog {
                                     .addComponent(lblnomFragmento, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cbxFragmento, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(cbxGestores, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, Short.MAX_VALUE))
@@ -177,7 +182,7 @@ public class frmMoficarFragmento extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblnomFragmento)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxFragmento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblnombdd)
@@ -228,8 +233,14 @@ public class frmMoficarFragmento extends javax.swing.JDialog {
         }
         
         
-       ´pendiente// ConfigBDD.InsertarFragmento(CbxTabla.getSelectedItem().toString(), txtNomFragmento.getText(), cbxGestores.getSelectedItem().toString(),txtNomBDD.getText(), txtIP.getText(), txtUsuario.getText(), txtContraseña.getText(), Estado, CbxZona.getSelectedItem().toString());
+       //pendiente// ConfigBDD.InsertarFragmento(CbxTabla.getSelectedItem().toString(), txtNomFragmento.getText(), cbxGestores.getSelectedItem().toString(),txtNomBDD.getText(), txtIP.getText(), txtUsuario.getText(), txtContraseña.getText(), Estado, CbxZona.getSelectedItem().toString());
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void CbxTablaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxTablaItemStateChanged
+        // TODO add your handling code here:
+       ConfigBDD.llenarComboFragmento(cbxFragmento, CbxTabla.getSelectedItem().toString());
+        System.out.println("bdd.front.frmModificarFragmento.CbxTablaItemStateChanged()");
+    }//GEN-LAST:event_CbxTablaItemStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CbxTabla;
@@ -237,8 +248,8 @@ public class frmMoficarFragmento extends javax.swing.JDialog {
     private javax.swing.JRadioButton RbInactivo;
     private javax.swing.ButtonGroup bgrpEstado;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox<String> cbxFragmento;
     private javax.swing.JComboBox<String> cbxGestores;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel lblContraseña;
     private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblIP;
